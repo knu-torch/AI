@@ -1,47 +1,22 @@
+```mermaid
 graph LR
-    subgraph Core
-        A[github.com/labstack/echo/v4] --> B[github.com/labstack/gommon]
-        A --> C[github.com/golang-jwt/jwt/v5]
-        A --> D[github.com/labstack/echo-jwt/v4]
-        A --> E[github.com/swaggo/echo-swagger]
-        E --> F[github.com/swaggo/swag]
-    end
+    main.go --> config
+    main.go --> logger
+    main.go --> db
+    main.go --> handler
+    main.go --> customMiddleware
+    main.go --> enums
+    main.go --> payload
 
-    subgraph Database
-        G[gorm.io/gorm] --> H[gorm.io/driver/postgres]
-    end
+    handler --> config
+    handler --> logger
+    handler --> db
+    handler --> enums
+    handler --> payload
 
-    subgraph Logging
-        I[go.uber.org/zap] --> J[go.uber.org/multierr]
-        I --> K[gopkg.in/natefinch/lumberjack.v2]
-    end
-
-    subgraph Configuration
-        L[github.com/spf13/viper] --> M[github.com/spf13/cast]
-        L --> N[github.com/spf13/pflag]
-    end
-
-    subgraph MessageQueue
-        O[github.com/rabbitmq/amqp091-go]
-    end
-
-    subgraph ProjectFiles
-        S[main.go] --> A
-        S --> D
-        S --> E
-        S --> G
-        S --> I
-        S --> L
-        S --> O
-        S --> P[github.com/knu-eselab/koj-backend/config]
-        S --> Q[github.com/knu-eselab/koj-backend/db]
-        S --> R[github.com/knu-eselab/koj-backend/logger]
-    end
-
-    style Core fill:#f9f,stroke:#333,stroke-width:2px
-    style Database fill:#ccf,stroke:#333,stroke-width:2px
-    style Logging fill:#fcc,stroke:#333,stroke-width:2px
-    style Configuration fill:#cfc,stroke:#333,stroke-width:2px
-                style MessageQueue fill:#cff,stroke:#333,stroke-width:2px
-    style ProjectFiles fill:#ffc,stroke:#333,stroke-width:2px
+    customMiddleware --> config
+    customMiddleware --> logger
+    customMiddleware --> db
+    customMiddleware --> enums
+    customMiddleware --> payload
 ```
