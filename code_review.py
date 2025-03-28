@@ -19,8 +19,8 @@ def extract_code_from_zip(zip_path):
     return "\n\n".join(extracted_code)
 
 def summarize_code(code_text, user_prompt):
-    """Gemini AI 모델을 이용하여 코드 요약을 생성 (최대 50,000자)"""
-    prompt = f"{user_prompt}\n\n{code_text[:50000]}"
+    """Gemini AI 모델을 이용하여 코드 요약을 생성"""
+    prompt = f"{user_prompt}\n\n{code_text}"
     try:
         response = gemini_model.generate_content(prompt)
         return response.text
@@ -54,7 +54,7 @@ if uploaded_file is not None:
 
         if st.button("📌 코드 요약 생성"):
             with st.spinner("코드를 요약하는 중..."):
-                summary = summarize_code(extracted_code[:50000], user_prompt)
+                summary = summarize_code(extracted_code, user_prompt)
                 
                 st.subheader("📜 코드 요약 결과")
                 st.write(summary)
