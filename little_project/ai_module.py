@@ -2,10 +2,8 @@ import os
 import zipfile
 from google.generativeai import configure, GenerativeModel
 from little_project.model.enums import summary_options
-
-
 def setup_gemini():
-    os.environ["GEMINI_API_KEY"] = "AIzaSyAlX1D_kIgCvoXXU72JgltquG8zWX2xu7Y"
+    os.environ["GEMINI_API_KEY"] = "AIzaSyCpFzXsjw_NP_sSEGpKpsxmVlgVk33KNW4"
     configure(api_key=os.getenv("GEMINI_API_KEY"))
     return GenerativeModel("gemini-2.0-flash")
 
@@ -101,5 +99,5 @@ def AI(zip_path: str, options: list[summary_options.SummaryOption]) -> dict:
 
 if __name__ == "__main__":
     options = [summary_options.SummaryOption.Project]
-    result = AI(zip_path="../../../a.zip", options=options)
+    result = AI(zip_path="a.zip", options=options)
     print("🔸 결과 출력:", result)
