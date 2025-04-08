@@ -1,11 +1,10 @@
 import os
 import zipfile
 from google.generativeai import configure, GenerativeModel
-from little_project.model.enums import summary_options
-
+from model.enums import summary_options
 
 def setup_gemini():
-    os.environ["GEMINI_API_KEY"] = "AIzaSyAlX1D_kIgCvoXXU72JgltquG8zWX2xu7Y"
+    os.environ["GEMINI_API_KEY"] = "AIzaSyBCDzf3655Cj29hdtPsbd65b-V2bpHMoKI"
     configure(api_key=os.getenv("GEMINI_API_KEY"))
     return GenerativeModel("gemini-2.0-flash")
 
@@ -28,34 +27,42 @@ def generate_prompt(options: list[summary_options.SummaryOption], code_text: str
 
     if summary_options.SummaryOption.Project in options:
         prompts.append(
-            "1 이 프로젝트의 핵심 기능과 목적을 한 줄로 요약해줘."
-            "2 사용된 라이브러리 종류와 버전 정보를 알려줘."
-            "2-1 주요 라이브러리와 역할을 포함해줘. (예: 웹 프레임워크, 데이터베이스, 머신러닝 등)"
-            "2-2 디펜던시 트리에서 Depth 2까지 포함해줘."
-            "3 배포 관련 정보를 분석하여 정리해줘."
-            "3-1 git action, 서비스 파일, Dockerfile 등의 자동화 빌드 및 배포 정보 포함"
-            "3-2 설정 파일(config, env 파일) 샘플 및 형식 제공"
-            "4 한국어로 작성해줘."
-            "5 마크다운 형식으로 작성해줘."
-            "6 ## title, ## libs, ## deploy_info, ## another 영역으로 순서대로 나눠서 작성해줘."
-            "7 libs 섹션에서 각 라이브러리의 역할을 설명하는 테이블 형식으로 제공해줘."
+            "다음은 코드 분석 요약 요청입니다. 반드시 아래와 같은 마크다운 형식으로 출력해 주세요:\n\n"
+            "## title\n"
+            "이 프로젝트의 핵심 기능과 목적을 한 줄로 요약\n\n"
+            "## libs\n"
+            "- 사용된 주요 라이브러리 및 프레임워크\n"
+            "- 각 라이브러리의 버전 정보\n"
+            "- 디펜던시 트리 (depth 2)\n"
+            "- 표 형식으로 각 라이브러리의 역할 명시\n\n"
+            "## deploy_info\n"
+            "- 서비스 파일 (자동 빌드 및 배포 관련 내용)\n"
+            "- 설정 파일 (config/env 등) 형식이나 예시\n\n"
+            "## another\n"
+            "- 기타 정보\n\n"
+            "모든 섹션을 빠짐없이 포함하며, 정보가 없을 경우 '해당 없음'이라고 작성해주세요. 한국어로, 마크다운 형식으로 작성해 주세요."
         )
 
     if summary_options.SummaryOption.Package in options:
         prompts.append(
-            "1 프로젝트의 각 패키지 역할을 분석하여 최대 2줄로 요약해줘."
-            "1-1 각 패키지가 담당하는 기능을 명확하게 작성해줘." 
-            "2 프로젝트 내부에서 사용되는 패키지들의 의존성을 정리해줘."
-            "2-1 외부 라이브러리는 제외하고, 내부 패키지 간의 관계만 다뤄줘." 
-            "2-2 의존성을 트리 구조 또는 표 형태로 표현해줘."
-            "3 한국어로 작성해줘."
-            "4 마크다운 형식으로 작성해줘."
-            "5 ## title, ## libs, ## deploy_info, ## another 영역으로 순서대로 나눠서 작성해줘." 
+            "다음은 패키지 분석 요약 요청입니다. 반드시 아래와 같은 마크다운 형식으로 출력해 주세요:\n\n"
+            "## title\n"
+            "- 각 패키지의 역할 분석 (각 패키지가 어떤 기능을 담당하는지 최대 2줄 요약)\n\n"
+            "## libs\n"
+            "해당 없음\n\n"
+            "## deploy_info\n"
+            "해당 없음\n\n"
+            "## another\n"
+            "- 각 패키지의 역할 분석 (각 패키지가 어떤 기능을 담당하는지 최대 2줄 요약)\n"
+            "- 외부 라이브러리를 제외한 내부 패키지 간 의존성 분석\n"
+            "- 트리 구조 또는 표 형태로 제공\n\n"
+            "모든 섹션을 반드시 포함해주세요. 정보가 없으면 '해당 없음'으로 작성해주세요."
         )
 
-    return "\n".join(prompts) + f"\n\n{code_text}"
+    return "\n\n" + "\n\n".join(prompts) + f"\n\n{code_text}"
 
 def parse_markdown_sections(text: str) -> dict:
+    print(text)
     sections = {"title": "", "libs": "", "deploy_info": "", "another": ""}
     current_section = None
     buffer = []
@@ -63,22 +70,17 @@ def parse_markdown_sections(text: str) -> dict:
     for line in text.splitlines():
         line = line.strip()
         if line.startswith("## "):
-            if current_section in sections:
+            if current_section and current_section in sections:
                 sections[current_section] = "\n".join(buffer).strip()
-            current_section = line[3:].strip().lower()  
+            current_section = line[3:].strip().lower()
             buffer = []
         else:
             buffer.append(line)
 
-    if current_section in sections:
+    if current_section and current_section in sections:
         sections[current_section] = "\n".join(buffer).strip()
 
-    return {
-        "title": sections["title"],
-        "libs": sections["libs"],
-        "deploy_info": sections["deploy_info"],
-        "another": sections["another"]
-    }
+    return sections
 
 def summarize_code(code_text: str, options: list[summary_options.SummaryOption]) -> dict:
     prompt = generate_prompt(options, code_text)
@@ -93,13 +95,13 @@ def summarize_code(code_text: str, options: list[summary_options.SummaryOption])
 
 def AI(zip_path: str, options: list[summary_options.SummaryOption]) -> dict:
     extracted_code = extract_code_from_zip(zip_path)
-    
+
     if extracted_code == "코드 파일이 없습니다.":
         return {"title": "", "libs": "", "deploy_info": "", "another": "ZIP 파일 내에 코드 파일이 없습니다."}
-    
+
     return summarize_code(extracted_code, options)
 
 if __name__ == "__main__":
-    options = [summary_options.SummaryOption.Project]
-    result = AI(zip_path="../../../a.zip", options=options)
-    print("🔸 결과 출력:", result)
+    options = [summary_options.SummaryOption.Package]
+    result = AI(zip_path="../../a.zip", options=options)
+    print(result)
