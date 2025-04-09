@@ -33,6 +33,7 @@ def generate_prompt(options: list[summary_options.SummaryOption], code_text: str
             "설정 파일(config, env 파일) 샘플 및 형식 제공"
             "한국어로 작성해줘."
             "## title, ## libs, ## deploy_info, ## another 영역으로 순서대로 나눠서 작성해줘."
+            "무조건 ## title로 시작하고 그 앞에는 아무 내용도 나오지 않게 출력해줘"
             "libs 섹션에서 각 라이브러리의 역할을 설명하는 테이블 형식으로 제공해줘."
         )
 

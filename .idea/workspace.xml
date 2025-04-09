@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbb33b1b-b809-41ce-b282-3192c0bbbf7a" name="Changes" comment="little_project의 prototype.py zip파일 받게 변경">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+    <list default="true" id="fbb33b1b-b809-41ce-b282-3192c0bbbf7a" name="Changes" comment="prototype.py에 프롬프트 제작 방법, api 받는 방법, 문자열 파싱방법 수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/little_project/prototype.py" beforeDir="false" afterPath="$PROJECT_DIR$/little_project/prototype.py" afterDir="false" />
     </list>
@@ -109,7 +108,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744005884075</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="prototype.py에 프롬프트 제작 방법, api 받는 방법, 문자열 파싱방법 수정">
+      <option name="closed" value="true" />
+      <created>1744014634446</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1744014634446</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -126,6 +133,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="연습용 프로젝트 추가" />
     <MESSAGE value="little_project의 prototype.py zip파일 받게 변경" />
-    <option name="LAST_COMMIT_MESSAGE" value="little_project의 prototype.py zip파일 받게 변경" />
+    <MESSAGE value="prototype.py에 프롬프트 제작 방법, api 받는 방법, 문자열 파싱방법 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="prototype.py에 프롬프트 제작 방법, api 받는 방법, 문자열 파싱방법 수정" />
   </component>
 </project>
