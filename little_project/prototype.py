@@ -55,8 +55,6 @@ def analyze_project(project_data): # 프롬프트 생각하기 체크박스같�
     prompt = """
     다음 프로젝트의 내용을 분석해 주세요:
     {project_data}
-
-    프로젝트의 개요, 주요 기능, 아키텍처, 핵심 코드 및 개선점을 정리해 주세요.
     """.format(project_data=str(project_data)[:50000])  # Gemini 입력 제한 고려
 
     response = client.models.generate_content(
