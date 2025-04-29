@@ -58,7 +58,37 @@ def generate_prompt(options: list[summary_options.SummaryOption], code_text: str
             "- 트리 구조 또는 표 형태로 제공\n\n"
             "모든 섹션을 반드시 포함해주세요. 정보가 없으면 '해당 없음'으로 작성해주세요."
         )
+    
+    if summary_options.SummaryOption.File in options:
+        prompts.append(
+            "다음은 파일 단위 요약 요청입니다. 반드시 아래와 같은 마크다운 형식으로 출력해 주세요:\n\n"
+            "## title\n"
+            "- 각 파일 이름과 해당 파일의 기능을 1~2줄로 요약\n"
+            "- 표 형식으로 제공\n\n"
+            "## libs\n"
+            "해당 없음\n\n"
+            "## deploy_info\n"
+            "해당 없음\n\n"
+            "## another\n"
+            "- 내부 모듈 간 상호작용 (있다면)\n\n"
+            "모든 섹션을 반드시 포함해주세요. 정보가 없으면 '해당 없음'으로 작성해주세요."
+        )
 
+    if summary_options.SummaryOption.Function in options:
+        prompts.append(
+            "다음은 함수 단위 요약 요청입니다. 반드시 아래와 같은 마크다운 형식으로 출력해 주세요:\n\n"
+            "## title\n"
+            "- 함수 이름과 해당 함수의 역할을 1~2줄로 요약\n"
+            "- 표 형식으로 제공\n\n"
+            "## libs\n"
+            "해당 없음\n\n"
+            "## deploy_info\n"
+            "해당 없음\n\n"
+            "## another\n"
+            "- 함수 간 호출 관계 (있다면 함수 호출 트리로 표현)\n\n"
+            "모든 섹션을 반드시 포함해주세요. 정보가 없으면 '해당 없음'으로 작성해주세요."
+        )
+    
     return "\n\n" + "\n\n".join(prompts) + f"\n\n{code_text}"
 
 def parse_markdown_sections(text: str) -> dict:
@@ -102,6 +132,6 @@ def AI(zip_path: str, options: list[summary_options.SummaryOption]) -> dict:
     return summarize_code(extracted_code, options)
 
 if __name__ == "__main__":
-    options = [summary_options.SummaryOption.Package]
+    options = [summary_options.SummaryOption.Function]
     result = AI(zip_path="../../a.zip", options=options)
     print(result)
