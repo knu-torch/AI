@@ -6,7 +6,7 @@ from model.enums import summary_options
 def setup_gemini():
     os.environ["GEMINI_API_KEY"] = "AIzaSyBCDzf3655Cj29hdtPsbd65b-V2bpHMoKI"
     configure(api_key=os.getenv("GEMINI_API_KEY"))
-    return GenerativeModel("gemini-2.0-flash")
+    return GenerativeModel("models/gemini-2.5-flash-preview-04-17")
 
 gemini_model = setup_gemini()
 
@@ -29,7 +29,7 @@ def generate_prompt(options: list[summary_options.SummaryOption], code_text: str
         prompts.append(
             "다음은 코드 분석 요약 요청입니다. 반드시 아래와 같은 마크다운 형식으로 출력해 주세요:\n\n"
             "## title\n"
-            "이 프로젝트의 핵심 기능과 목적을 한 줄로 요약\n\n"
+            "- 이 프로젝트의 핵심 기능과 목적을 한 줄로 요약\n\n"
             "## libs\n"
             "- 사용된 주요 라이브러리 및 프레임워크\n"
             "- 각 라이브러리의 버전 정보\n"
@@ -92,7 +92,6 @@ def generate_prompt(options: list[summary_options.SummaryOption], code_text: str
     return "\n\n" + "\n\n".join(prompts) + f"\n\n{code_text}"
 
 def parse_markdown_sections(text: str) -> dict:
-    print(text)
     sections = {"title": "", "libs": "", "deploy_info": "", "another": ""}
     current_section = None
     buffer = []
