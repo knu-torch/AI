@@ -4,6 +4,7 @@ import zipfile
 from tkinter import filedialog
 from google import genai
 from little_project.model.enums import summary_options
+from pydantic import BaseModel
 
 client = genai.Client(api_key="AIzaSyCpFzXsjw_NP_sSEGpKpsxmVlgVk33KNW4")
 
@@ -24,17 +25,14 @@ def generate_prompt(options: list[summary_options.SummaryOption], code_text: str
 
     if summary_options.SummaryOption.Project in options:
         prompt.append(
-            "이 프로젝트의 핵심 기능과 목적을 한 줄로 요약해줘"
-            "사용된 라이브러리 종류와 버전 정보를 알려줘."
-            "주요 라이브러리와 역할을 포함해줘. (예: 웹 프레임워크, 데이터베이스, 머신러닝 등)"
-            "디펜던시 트리에서 Depth 2까지 포함해줘."
-            "배포 관련 정보를 분석하여 정리해줘."
-            "git action, 서비스 파일, Dockerfile 등의 자동화 빌드 및 배포 정보 포함"
-            "설정 파일(config, env 파일) 샘플 및 형식 제공"
+            "이 schema를 따라줘 : {'title': str, 'libs': str, 'deploy_info': str, 'another': str}"
+            "이 json 요소들의 내용들은 다음과 같아"
+            "title: 이 프로젝트의 핵심 기능과 목적을 한 줄로 요약해줘"
+            "libs: 사용된 라이브러리 종류와 버전 정보를 알려주고 주요 라이브러리와 역할을 포함해줘. (예: 웹 프레임워크, 데이터베이스, 머신러닝 등) 그리고 디펜던시 트리에서 Depth 2까지 포함해줘."
+            "deploy_info: 배포 관련 정보를 분석하여 정리해줘, git action, 서비스 파일, Dockerfile 등의 자동화 빌드 및 배포 정보 포함 되어야 하고 설정 파일(config, env 파일) 샘플 및 형식 제공해줘"
+            "another: 앞에서 들어가지 않은 내용들을 넣어줘"
+            "title은 한 줄로 쓰고 나머지는 길게 설명해줘"
             "한국어로 작성해줘."
-            "## title, ## libs, ## deploy_info, ## another 영역으로 순서대로 나눠서 작성해줘."
-            "무조건 ## title로 시작하고 그 앞에는 아무 내용도 나오지 않게 출력해줘"
-            "libs 섹션에서 각 라이브러리의 역할을 설명하는 테이블 형식으로 제공해줘."
         )
 
     if summary_options.SummaryOption.Package in options:
@@ -51,6 +49,12 @@ def generate_prompt(options: list[summary_options.SummaryOption], code_text: str
     prompt.extend(code_text)
     return prompt
 
+class recipe(BaseModel):
+    title: str
+    libs: str
+    deploy_info: str
+    another: str
+
 def analyze_project(project_data): # 프롬프트 생각하기 체크박스같은 입력에 따라 프롬프트 변경해야됨
     prompt = """
     다음 프로젝트의 내용을 분석해 주세요:
@@ -59,7 +63,11 @@ def analyze_project(project_data): # 프롬프트 생각하기 체크박스같�
 
     response = client.models.generate_content(
         model="gemini-2.0-flash",
-        contents=prompt
+        contents=prompt,
+        config= {
+            'response_mime_type': 'application/json',
+            'response_schema': recipe,
+        },
     )
     return response.text
 
@@ -72,47 +80,13 @@ def select_zip_file():
     )
     return zip_file_path
 
-def parse_markdown_sections(text: str) -> dict:
-    sections = {"title": "", "libs": "", "deploy_info": "", "another": ""}
-    current_section = "Nope"
-    buffer = []
-    print(text)
-    for line in text.splitlines():
-        if "## title" in line.lower():
-            current_section = "title"
-        elif "## libs" in line.lower():
-            sections[current_section] = "\n".join(buffer).strip()
-            buffer = []
-            current_section = "libs"
-        elif "## deploy_info" in line.lower():
-            sections[current_section] = "\n".join(buffer).strip()
-            buffer = []
-            current_section = "deploy_info"
-        elif '## another' in line.lower():
-            sections[current_section] = "\n".join(buffer).strip()
-            buffer = []
-            current_section = "another"
-        elif current_section == "Nope":
-            continue
-        else:
-            buffer.append(line)
-
-    sections[current_section] = "\n".join(buffer).strip()
-    print(sections)
-    return {
-        "title": sections["title"],
-        "libs": sections["libs"],
-        "deploy_info": sections["deploy_info"],
-        "another": sections["another"]
-    }
-
 if __name__ == "__main__":
     project_path = select_zip_file()
     if project_path:
         project_data = read_project_files(project_path)
         generated_prompt = generate_prompt([summary_options.SummaryOption.Project], project_data)
         analysis = analyze_project(generated_prompt)
-        parsed = parse_markdown_sections(analysis)
         print("\n=== 프로젝트 분석 결과 ===\n")
+        print(analysis)
     else:
         print("폴더를 선택하지 않았습니다.")
