@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbb33b1b-b809-41ce-b282-3192c0bbbf7a" name="Changes" comment="prototype.py llm 결과로 구조화된 딕셔너리가 나오도록 프롬프트 수정">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/little_project/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/little_project/.idea/.name" afterDir="false" />
+    <list default="true" id="fbb33b1b-b809-41ce-b282-3192c0bbbf7a" name="Changes" comment="결과 문자열 파싱 기능 추가">
       <change beforePath="$PROJECT_DIR$/little_project/prototype.py" beforeDir="false" afterPath="$PROJECT_DIR$/little_project/prototype.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -141,7 +139,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746440068069</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="결과 문자열 파싱 기능 추가">
+      <option name="closed" value="true" />
+      <created>1746599723237</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1746599723237</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -162,6 +168,7 @@
     <MESSAGE value="SummaryOption에서 Package 선택했을때 프롬프트 변경" />
     <MESSAGE value="analyze_project 함수 프롬프트 수정" />
     <MESSAGE value="prototype.py llm 결과로 구조화된 딕셔너리가 나오도록 프롬프트 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="prototype.py llm 결과로 구조화된 딕셔너리가 나오도록 프롬프트 수정" />
+    <MESSAGE value="결과 문자열 파싱 기능 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="결과 문자열 파싱 기능 추가" />
   </component>
 </project>

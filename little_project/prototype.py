@@ -9,6 +9,7 @@ import json
 
 client = genai.Client(api_key="AIzaSyCpFzXsjw_NP_sSEGpKpsxmVlgVk33KNW4")
 
+#프로젝트 파일 받아서 그안의 모든 파일들을 재귀적으로 읽고 그 내용을 전부 파일이름 : 파일 내용 문자열 이렇게 해서 딕셔너리에 넣고 리턴
 def read_project_files(zip_path): # 특정 확장자만 받는다든가의 변경 가능
     extracted_code = {}
     with zipfile.ZipFile(zip_path, "r") as zip_ref:
@@ -21,6 +22,7 @@ def read_project_files(zip_path): # 특정 확장자만 받는다든가의 변�
                         print(f"파일 읽기 오류 ({file_name}): {e}")
     return extracted_code
 
+#옵션에 맞는 프롬프트를 선택해서 리턴(지금은 project 옵션밖에 안됨!!)
 def generate_prompt(options: list[summary_options.SummaryOption], code_text: str):
     prompt = []
 
@@ -50,13 +52,15 @@ def generate_prompt(options: list[summary_options.SummaryOption], code_text: str
     prompt.extend(code_text)
     return prompt
 
+#임시 json 형태
 class recipe(BaseModel):
     title: str
     libs: str
     deploy_info: str
     another: str
 
-def analyze_project(project_data): # 프롬프트 생각하기 체크박스같은 입력에 따라 프롬프트 변경해야됨
+#generate_prompt 함수에서 만든 프롬프트와 read_project_files에서 만든 딕셔너리를 합쳐서 llm에 넣음, return 값은 recipe class에 있는 형태의 딕셔너리의 문자열로 나오게 된다
+def analyze_project(project_data):
     prompt = """
     다음 프로젝트의 내용을 분석해 주세요:
     {project_data}
@@ -72,11 +76,12 @@ def analyze_project(project_data): # 프롬프트 생각하기 체크박스같�
     )
     return response.text
 
+# llm 결과로 나온 딕셔너리 형태의 문자열을 딕셔너리로 파싱
 def parse_text(data):
     parsed_dict = json.loads(data)
     return parsed_dict
 
-
+#zip파일만 선택하게 하는 함수
 def select_zip_file():
     root = tk.Tk()
     root.withdraw()  # GUI 창 숨기기
