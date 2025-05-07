@@ -5,6 +5,7 @@ from tkinter import filedialog
 from google import genai
 from little_project.model.enums import summary_options
 from pydantic import BaseModel
+import json
 
 client = genai.Client(api_key="AIzaSyCpFzXsjw_NP_sSEGpKpsxmVlgVk33KNW4")
 
@@ -71,6 +72,11 @@ def analyze_project(project_data): # 프롬프트 생각하기 체크박스같�
     )
     return response.text
 
+def parse_text(data):
+    parsed_dict = json.loads(data)
+    return parsed_dict
+
+
 def select_zip_file():
     root = tk.Tk()
     root.withdraw()  # GUI 창 숨기기
@@ -86,7 +92,11 @@ if __name__ == "__main__":
         project_data = read_project_files(project_path)
         generated_prompt = generate_prompt([summary_options.SummaryOption.Project], project_data)
         analysis = analyze_project(generated_prompt)
+        parsed_text = parse_text(analysis)
         print("\n=== 프로젝트 분석 결과 ===\n")
-        print(analysis)
+        print(parsed_text['title'])
+        print(parsed_text['libs'])
+        print(parsed_text['deploy_info'])
+        print(parsed_text['another'])
     else:
         print("폴더를 선택하지 않았습니다.")
