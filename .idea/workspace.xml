@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbb33b1b-b809-41ce-b282-3192c0bbbf7a" name="Changes" comment="코드 설명 추가">
+    <list default="true" id="fbb33b1b-b809-41ce-b282-3192c0bbbf7a" name="Changes" comment="little_project ai_module.py에 설명 추가">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/little_project/ai_module.py" beforeDir="false" afterPath="$PROJECT_DIR$/little_project/ai_module.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +156,15 @@
       <option name="project" value="LOCAL" />
       <updated>1746600031723</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="little_project ai_module.py에 설명 추가">
+      <option name="closed" value="true" />
+      <created>1747894593258</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1747894593258</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -178,6 +187,7 @@
     <MESSAGE value="prototype.py llm 결과로 구조화된 딕셔너리가 나오도록 프롬프트 수정" />
     <MESSAGE value="결과 문자열 파싱 기능 추가" />
     <MESSAGE value="코드 설명 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="코드 설명 추가" />
+    <MESSAGE value="little_project ai_module.py에 설명 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="little_project ai_module.py에 설명 추가" />
   </component>
 </project>

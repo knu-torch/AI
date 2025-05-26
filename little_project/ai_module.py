@@ -14,7 +14,7 @@ class Recipe(BaseModel):
 
 
 def setup_gemini():
-    os.environ["GEMINI_API_KEY"] = "AIzaSyCpFzXsjw_NP_sSEGpKpsxmVlgVk33KNW4"
+    os.environ["GEMINI_API_KEY"] = token
     return genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 
